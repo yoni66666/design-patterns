@@ -13,7 +13,10 @@ Design patterns are important for several reasons:
 
     Scalability: Design patterns can help make a system more scalable by providing a modular, flexible design that can be easily extended and adapted to changing requirements.
     
-Below are some examples of design patterns that I wrote, while they are divided into 3 types
+Below are some examples of design patterns that I wrote, while they are divided into 3 types:
+
 Creational Patterns: Singleton, Factory.
+
 Structural Patterns: composition, Decorator.
+
 Behavioral Patterns: Observer
