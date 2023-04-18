@@ -1,12 +1,10 @@
 /**
  * Name: yoni
- * Reviewer: Eliraz
- * Exercise: factoryTree
+ * Reviewer: tali
+ * Exercise: composite
  */
 
-package il.co.ilrd.factoryTree;
-import il.co.ilrd.factory.Factory;
-
+package il.co.ilrd.composite;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -14,19 +12,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FactoryTree {
-    Factory <String, FileComponent,String> factory;
-    private final FileComponent folder;
+public class Tree {
+    private final Folder folder;
 
-    public FactoryTree(String path) {
+    public Tree(String path) {
         if (!Files.isDirectory(Paths.get(path))) {
             throw new IllegalArgumentException("This directory is not exists");
         }
-
-        factory = new Factory<>();
-        factory.add("Folder", (a) -> new Folder(a));
-        factory.add("FileLeaf", (a) -> new FileLeaf(a));
-        folder =  factory.create("Folder", path);
+        folder = new Folder(path);
     }
 
     public void print() {
@@ -37,14 +30,15 @@ public class FactoryTree {
         public void print(int offset);
     }
 
-    private class Folder implements FileComponent{
-
-        List <FileComponent> componentList;
+    private class Folder implements FileComponent {
+        List<FileComponent> componentList;
         String folderName;
-        public Folder(String path){
-            componentList = new ArrayList<>();
+
+        private Folder(String path) {
+
             File pathFile = new File(path);
             folderName = pathFile.getName();
+            componentList = new ArrayList<FileComponent>();
 
             File[] filesList = pathFile.listFiles();
 
@@ -58,6 +52,7 @@ public class FactoryTree {
                 }
             }
         }
+
 
         @Override
         public void print(int offset) {
@@ -77,10 +72,10 @@ public class FactoryTree {
         }
     }
 
-    private class FileLeaf implements FileComponent{
-        String fileName;
-        public FileLeaf(String fileName){
-            this.fileName = fileName;
+    private class FileLeaf implements FileComponent {
+        String strFileName;
+        private FileLeaf(String fileName) {
+            strFileName = fileName;
         }
 
         @Override
@@ -93,20 +88,21 @@ public class FactoryTree {
                 System.out.print("└── ");
             }
 
-            System.out.println( Color.ANSI_GREEN + fileName + Color.ANSI_RESET);
+            System.out.println( Color.ANSI_GREEN + strFileName + Color.ANSI_RESET);
         }
     }
+
     static class Color {
         public static final String ANSI_RESET = "\u001B[0m";
         public static final String ANSI_GREEN = "\u001B[32m";
         public static final String ANSI_BLUE = "\u001B[34m";
     }
 }
+
 class Main{
     public static void main(String[] args) throws IllegalAccessException {
-        String path = "/home/jonathan/git/jonathan.shapiro/fs/projects/src/il/co/ilrd";
-        FactoryTree tree = new FactoryTree(path);
+        String path = "/home/jonathan/git/jonathan.shapiro/fs/projects/src/il/co/ilrd/Concurrency";
+        Tree tree = new Tree(path);
         tree.print();
     }
 }
-
